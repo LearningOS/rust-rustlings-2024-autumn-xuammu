@@ -3,10 +3,41 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+fn quick_sort<T>(array: &mut [T],mut left:usize,mut right:usize)->usize
+where
+T:Ord+PartialOrd
+{
+    let flag = left;
+    while left < right{
+        while left<right && array[left] < array[flag] {
+            left += 1;
+        }
+        while left < right && array[right] >= array[flag] {
+            right -=1;
+        }
+        if left != right{
+            array.swap(left, right);
+        }
+    }
+    array.swap(flag, left);
+    left
+}
+fn sort<T>(array: &mut [T])
+where 
+T:Ord+PartialOrd
+{
+    if array.len() <=1 {
+        return;
+    }
+	let mut flag = quick_sort(array, 0, array.len()-1);
+    if flag != 0{
+        sort(& mut array[0..flag]);
+    }
+    if flag+1 < array.len(){
+        sort(&mut array[flag+1..]);
+    }
+    
 }
 #[cfg(test)]
 mod tests {

@@ -2,7 +2,7 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
+
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -38,6 +38,19 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.items.push(value);
+        self.count += 1;
+        let mut index = self.count;
+        while index > 1 {
+            let parent = self.parent_idx(index);
+            if (self.comparator)(&self.items[index],&self.items[parent]){
+                self.items.swap(index, parent);
+                index = parent;
+            }
+            else {
+                break;
+            }
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -58,9 +71,24 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
+        let left_index = self.left_child_idx(idx);
+        let right_index = self.right_child_idx(idx);
+        if right_index <= self.count{
+            match (self.comparator)(&self.items[left_index],&self.items[right_index]){
+                ture => return left_index,
+                false => return right_index
+            }
+        }
+        else if left_index <= self.count{
+            return left_index;
+        }
+        else{
+            idx
+        }
     }
+		
 }
+
 
 impl<T> Heap<T>
 where
@@ -85,7 +113,38 @@ where
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+        if self.count == 0 {
+            return None;
+        }
+        
+        // 保存堆顶元素
+        let return_value = std::mem::replace(&mut self.items[1], T::default());
+        
+        // 将最后一个元素移到堆顶
+        if self.count > 1 {
+            self.items[1] = self.items.pop().unwrap();
+        } else {
+            self.items.pop();
+        }
+        self.count -= 1;
+        
+        // 向下调整堆
+        let mut idx = 1;
+        while self.children_present(idx) {
+            let child_idx = self.smallest_child_idx(idx);
+            if child_idx > self.count {
+                break;
+            }
+            if (self.comparator)(&self.items[child_idx], &self.items[idx]) {
+                self.items.swap(child_idx, idx);
+                idx = child_idx;
+            } else {
+                break;
+            }
+        }
+        
+        Some(return_value)
+		
     }
 }
 
