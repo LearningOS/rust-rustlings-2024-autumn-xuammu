@@ -197,7 +197,7 @@ Now you should be done!
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 Development-focused discussion about Rustlings happens in the [**rustlings** stream](https://rust-lang.zulipchat.com/#narrow/stream/334454-rustlings)
 on the [Rust Project Zulip](https://rust-lang.zulipchat.com). Feel free to start a new thread there
